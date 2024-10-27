@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Khởi tạo các TextView và EditText từ giao diện người dùng
         amountDisplayTextView = findViewById(R.id.amountDisplayTextView);
         percentCustomTextView = findViewById(R.id.percentCustomTextView);
         tip15TextView = findViewById(R.id.tip15TextView);
@@ -38,10 +39,12 @@ public class MainActivity extends Activity {
         taxEditText = findViewById(R.id.taxEditText);
         peopleEditText = findViewById(R.id.peopleEditText);
 
+        // Cài đặt giá trị hiển thị ban đầu cho hóa đơn
         amountDisplayTextView.setText(currencyFormat.format(billAmount));
         updateStandard();
         updateCustom();
 
+        // Thiết lập TextWatcher cho các trường nhập liệu
         EditText amountEditText = findViewById(R.id.amountEditText);
         amountEditText.addTextChangedListener(amountEditTextWatcher);
 
@@ -52,8 +55,9 @@ public class MainActivity extends Activity {
         peopleEditText.addTextChangedListener(peopleEditTextWatcher);
     }
 
+    // Hàm cập nhật tip và tổng cộng khi chọn mức 15% cố định
     private void updateStandard() {
-        double effectiveAmount = billAmount + taxAmount;
+        double effectiveAmount = billAmount + taxAmount; // Tổng tiền sau khi cộng thuế
         double fifteenPercentTip = effectiveAmount * 0.15;
         double fifteenPercentTotal = effectiveAmount + fifteenPercentTip;
 
@@ -62,10 +66,11 @@ public class MainActivity extends Activity {
         updatePerPerson(fifteenPercentTotal);
     }
 
+    // Hàm cập nhật tip và tổng cộng khi chọn mức tip tùy chỉnh
     private void updateCustom() {
         percentCustomTextView.setText(percentFormat.format(customPercent));
 
-        double effectiveAmount = billAmount + taxAmount;
+        double effectiveAmount = billAmount + taxAmount; // Tổng tiền sau khi cộng thuế
         double customTip = effectiveAmount * customPercent;
         double customTotal = effectiveAmount + customTip;
 
@@ -74,6 +79,7 @@ public class MainActivity extends Activity {
         updatePerPerson(customTotal);
     }
 
+    // Hàm cập nhật tổng số tiền mỗi người phải trả nếu chia đều hóa đơn
     private void updatePerPerson(double totalAmount) {
         if (numberOfPeople > 0) {
             double perPersonAmount = totalAmount / numberOfPeople;
@@ -81,6 +87,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // Xử lý thay đổi mức phần trăm tip từ SeekBar
     private OnSeekBarChangeListener customSeekBarListener = new OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -93,6 +100,7 @@ public class MainActivity extends Activity {
         public void onStopTrackingTouch(SeekBar seekBar) { }
     };
 
+    // TextWatcher để theo dõi và cập nhật giá trị hóa đơn
     private TextWatcher amountEditTextWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -111,6 +119,7 @@ public class MainActivity extends Activity {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
     };
 
+    // TextWatcher để theo dõi và cập nhật giá trị thuế
     private TextWatcher taxEditTextWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -128,6 +137,7 @@ public class MainActivity extends Activity {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
     };
 
+    // TextWatcher để theo dõi và cập nhật số lượng người trong nhóm
     private TextWatcher peopleEditTextWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
